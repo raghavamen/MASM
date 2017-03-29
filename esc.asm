@@ -1,0 +1,54 @@
+; WORKING PROPERLY ON DEBUG BUT WON'T SHOW MESSAGE ON THE ACTUAL EXECUTION.
+
+
+.model small
+
+.data
+MESSAGE DB 'SCREENSAVER NO INPUT TAKEN','$'
+.code
+main proc far
+mov ax, @data
+mov ds, ax
+CALL CLS
+A:
+
+mov ah, 10h
+int 16h
+cmp al, 0DH
+JE EXIT
+CMP AX, 011BH
+JE DELAY
+JMP A
+
+DELAY:
+LEA DX, MESSAGE
+MOV AH, 09H
+INT 21H
+MOV BL, 20
+L:
+MOV     CX, 0FH
+MOV     DX, 4240H
+MOV     AH, 86H
+INT     15H
+DEC BL
+JNZ L
+CALL CLS 
+JMP A
+
+EXIT: 
+mov ax, 4c00h
+int 21h
+
+main endp
+
+CLS PROC NEAR
+MOV AH, 06H
+MOV AL, 00
+MOV BH, 00
+MOV CX, 0000
+MOV DX, 184FH	
+INT 10H
+RET 
+CLS ENDP 
+
+end 
